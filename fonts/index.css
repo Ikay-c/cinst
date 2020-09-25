@@ -8,6 +8,7 @@ h1{
   color:violet;
   background-color:orange;
   border-color:brown;
+  padding: 15px;
 }
 .input-box{
   height:30px;
@@ -33,16 +34,11 @@ h1{
   float:left;
   margin-left:15px;
 }
-.text-receive{
+.text-reveive{
   float:right;
   margin-right:15px;
 }
-.text-box{
-  color:green;
-  background-color:green;
-}
-.chat-message{
-  color:green;
-  background-color:green;
-  min-height:28px;
+.chat-box{
+  min-height:30px;
+
 }
