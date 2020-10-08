@@ -1,5 +1,5 @@
 function Chatbot(){
- this.message = [
+ this.possibleMessages = [
   ['hello', "hey, what's up", "who are you?", " what's your name"],
   ["who made you?", "how much does it cost?", "how do you want it?"],
   ["are you there?", "are you going?"]];
@@ -12,7 +12,7 @@ function Chatbot(){
   //here, I'm trying to create elements that would contain the chat body, the message box in which the message will appear after been sent, the box that'd contain message while still typing and the send button.
   this.chatBody = document.createElement('div');
   this.chatBody.setAttribute('class', 'chat-body');
-  document.body.appendChild(this.chatBody);
+  
   this.messageBody = document.createElement('div');
   this.messageBody.setAttribute('class', 'message-body');
   this.chatBody.appendChild(this.messageBody);
@@ -25,13 +25,14 @@ function Chatbot(){
   this.sendButton.innerHTML = 'Send';
   this.chatBody.appendChild(this.sendButton);
   
-  this.messages = "";
+  this.message= "";
   this.start = function(){
+    document.body.appendChild(this.chatBody);
   };
-  // here's a constructor function that serves like a house to the message body.
-  function createMessage(messages, messageBody, type = 'output'){
+  // here's a function that creates a html element that houses the message being sent.
+  function createMessage(message, messageBody, type = 'output'){
     var box = document.createElement('div');
-    box.setAttribute('class', 'chat-box')
+    box.setAttribute('class', 'chat-box');
     var text = document.createElement('span');
     if (type == 'output'){
       text.style.color = 'violet';
@@ -41,43 +42,43 @@ function Chatbot(){
       text.setAttribute('class', 'text-receive');
     }
     box.appendChild(text);
-    self.messageBody.appendChild(box);
-    text.innerHTML = self.messages;
+    messageBody.appendChild(box);
+    text.innerHTML = message;
   }
-  //here the method receives the message from the user and send to the message bdy.
-  this.receive = function(messages){
-    this.messages = messages;
-    createMessage(messages, this.messageBody, 'receive');
+  //here the method receives the message from the user and send to the message body.
+  this.receive = function(message){
+    this.message = message;
+    createMessage(message, this.messageBody, 'receive');
   };
   var self = this;
   function chat(){// here is a function that tries to loop through the items in the array.
     var inputMessage = self.inputBox.value;
-    if(self.messages != inputMessage){//here we try to compare the user's input to the 
-      self.receive(inputMessage);//passing the input message through the receive method.
-      /* i here is for the arrays inside the outermost array with length of 3*/
-      var i = 0;
-      while(i < self.message.length){
-        self.innerMessages = self.message[i];
-        /* k is for the elements inside the inner arrays*/
-        k = 0;
-        while (k < self.innerMessages.length){
-         self.userInput = self.innerMessages[k];
-         var confirm = self.messages.includes(self.userInput);
-         if (confirm == true){
-          self.innerReplies = self.replies[i];
-          self.output(self.innerReplies[k]);//passing the response to thr user
-          break;
-         }else{
-          k++;
-         }
-        }
-      i++;
-     }
+    self.receive(inputMessage);//passing the  message through the receive method.
+    /* i here is for the arrays inside the outermost array with length of 3*/
+    self.inputBox.value = null;
+    var i = 0;
+    while(i < self.possibleMessages.length){
+      var innerMessage = self.possibleMessages[i];
+      /* k is for the elements inside the inner arrays*/
+      k = 0;
+      while (k < innerMessage.length){
+       var userInput = innerMessage[k];
+       var confirm = inputMessage.includes(userInput);
+       if (confirm == true){
+        var innerReplies = self.replies[i];
+        self.output(innerReplies[k]);//passing the response to thr user
+        
+       }
+       k++;
+       
+      }
+    i++;
    }
+   
   }
   
-  this.output= function(messages){//here is a method that replies a user with a matched response through the user interface.
-    createMessage(messages, this.messageBody, 'output');
+  this.output= function(message){//here is a method that replies a user with a matched response through the user interface.
+    createMessage(message, this.messageBody, 'output');
   };
   this.sendButton.onclick = function(events){//here is an event that sends the user's message once clicked.
     events.preventDefault();

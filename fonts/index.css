@@ -32,13 +32,12 @@ h1{
 }
 .text-output{
   float:left;
-  margin-left:15px;
+  margin-left:10px;
 }
-.text-reveive{
+.text-receive{
   float:right;
-  margin-right:15px;
+  margin-right:10px;
 }
 .chat-box{
   min-height:30px;
-
 }
